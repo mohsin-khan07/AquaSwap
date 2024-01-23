@@ -1,0 +1,28 @@
+.select {
+  display: flex;
+  padding: 0px 15px 0px 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+  border-radius: var(--button-radius);
+  background-color: var(--color-light);
+  cursor: pointer;
+}
+
+.icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 100px;
+  box-shadow: var(--light-shadow);
+}
+
+.symbol {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.arrow {
+  width: 10px;
+}

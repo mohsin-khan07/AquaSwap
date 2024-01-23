@@ -1,0 +1,11 @@
+.container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 5px;
+}
+
+.title {
+  text-align: right;
+  font-size: 10px;
+}

@@ -1,0 +1,15 @@
+.container {
+  display: flex;
+  width: 100%;
+  padding: 10px 20px;
+  justify-content: space-between;
+  align-items: center;
+
+  border-top: 1px solid var(--color-light, #f2f4f6);
+  border-bottom: 1px solid var(--color-light, #f2f4f6);
+}
+
+.tokens {
+  font-size: 12px;
+  font-weight: 500;
+}
