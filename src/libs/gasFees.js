@@ -12,22 +12,17 @@ export const getGasFees = async (
 ) => {
   const poolConstants = await getPoolConstants(tokenIn, tokenOut, provider);
 
-  if (amountIn !== 0) {
-    const gasEstimate = await quoterContract.estimateGas.quoteExactInputSingle(
-      poolConstants.token0,
-      poolConstants.token1,
-      poolConstants.fee,
-      fromReadableAmount(amountIn, tokenIn.decimals).toString(),
-      0
-    );
+  const gasEstimate = await quoterContract.estimateGas.quoteExactInputSingle(
+    poolConstants.token0,
+    poolConstants.token1,
+    poolConstants.fee,
+    fromReadableAmount(amountIn, tokenIn.decimals).toString(),
+    0
+  );
 
-    const gasPrice = (await alchemy.core.getGasPrice()).toString();
+  const gasPrice = (await alchemy.core.getGasPrice()).toString();
 
-    const gasFee = Utils.formatUnits(
-      gasPrice * gasEstimate.toString(),
-      "ether"
-    );
+  const gasFee = Utils.formatUnits(gasPrice * gasEstimate.toString(), "ether");
 
-    return gasFee;
-  }
+  return gasFee;
 };
