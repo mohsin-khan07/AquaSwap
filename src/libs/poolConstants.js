@@ -6,6 +6,9 @@ const POOL_FACTORY_CONTRACT_ADDRESS =
   "0x1F98431c8aD98523631AE4a59f267346ea31F984";
 
 export const getPoolConstants = async (tokenIn, tokenOut, provider) => {
+  console.log(tokenIn);
+  console.log(tokenOut);
+
   const currPoolAddress = computePoolAddress({
     factoryAddress: POOL_FACTORY_CONTRACT_ADDRESS,
     tokenA: tokenIn,
@@ -33,6 +36,9 @@ export const getPoolConstants = async (tokenIn, tokenOut, provider) => {
     poolContract.token1(),
     poolContract.fee(),
   ]);
+
+  console.log(token0);
+  console.log(token1);
 
   return {
     token0,

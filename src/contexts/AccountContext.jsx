@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { createContext, useContext, useEffect, useState } from "react";
-import { useGlobalContext } from "./GlobalContext";
 import { Alchemy, Network, Utils } from "alchemy-sdk";
+import { useGlobalContext } from "./GlobalContext";
 
 const AccountContext = createContext();
 

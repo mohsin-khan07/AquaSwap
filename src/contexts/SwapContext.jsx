@@ -66,8 +66,8 @@ function SwapContextProvider({ children }) {
             setOutputAmount(
               toReadableAmount(quotedAmountOut, tokenOut.decimals)
             );
-          } catch (error) {
-            console.error(error.message);
+          } catch {
+            throw new Error("Error calculating output amount!");
           }
         }
       }
