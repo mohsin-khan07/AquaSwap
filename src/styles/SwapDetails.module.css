@@ -14,7 +14,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 5px;
+  gap: 7px;
 }
 
 .details {
@@ -22,6 +22,7 @@
   justify-content: space-between;
   align-items: center;
   align-self: stretch;
+  font-size: 14px;
 }
 
 .value {

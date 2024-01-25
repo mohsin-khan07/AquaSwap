@@ -6,6 +6,7 @@ import { fromReadableAmount, toReadableAmount } from "../libs/conversion";
 import { getPoolConstants } from "../libs/poolConstants";
 import { Alchemy, Network, Utils } from "alchemy-sdk";
 import { useGlobalContext } from "./GlobalContext";
+import { getGasFees } from "../libs/gasFees";
 
 const SwapContext = createContext();
 
@@ -36,8 +37,10 @@ function SwapContextProvider({ children }) {
   const [tokenOutBalance, setTokenOutBalance] = useState();
   const [amountIn, setAmountIn] = useState(0);
   const [outputAmount, setOutputAmount] = useState("");
+  const [rate, setRate] = useState();
+  const [gasFees, setGasFees] = useState();
 
-  const { userAddress } = useGlobalContext();
+  const { userAddress, getUsdBalance } = useGlobalContext();
 
   useEffect(() => {
     const getQuote = async () => {
@@ -47,20 +50,30 @@ function SwapContextProvider({ children }) {
           tokenOut,
           provider
         );
-        const quotedAmountOut =
-          await quoterContract.callStatic.quoteExactInputSingle(
-            poolConstants.token0,
-            poolConstants.token1,
-            poolConstants.fee,
-            fromReadableAmount(amountIn, tokenIn.decimals).toString(),
-            0
-          );
 
-        setOutputAmount(toReadableAmount(quotedAmountOut, tokenOut.decimals));
+        setRate(poolConstants.rate);
+
+        if (amountIn !== 0) {
+          try {
+            const quotedAmountOut =
+              await quoterContract.callStatic.quoteExactInputSingle(
+                poolConstants.token0,
+                poolConstants.token1,
+                poolConstants.fee,
+                fromReadableAmount(amountIn, tokenIn.decimals).toString(),
+                0
+              );
+            setOutputAmount(
+              toReadableAmount(quotedAmountOut, tokenOut.decimals)
+            );
+          } catch (error) {
+            console.error(error.message);
+          }
+        }
       }
     };
     getQuote();
-  }, [amountIn, tokenIn, tokenOut]);
+  }, [amountIn, tokenIn, tokenOut, getUsdBalance]);
 
   useEffect(() => {
     if (userAddress) {
@@ -96,6 +109,24 @@ function SwapContextProvider({ children }) {
     }
   }, [userAddress, tokenIn, tokenOut]);
 
+  useEffect(() => {
+    const gasFees = async () => {
+      if (tokenIn && tokenOut && amountIn !== 0) {
+        const gasFee = await getGasFees(
+          quoterContract,
+          tokenIn,
+          tokenOut,
+          amountIn,
+          provider,
+          alchemy
+        );
+        const gasInUsd = await getUsdBalance(gasFee);
+        setGasFees(gasInUsd);
+      }
+    };
+    gasFees();
+  }, [amountIn, tokenIn, tokenOut, getUsdBalance]);
+
   return (
     <SwapContext.Provider
       value={{
@@ -108,6 +139,8 @@ function SwapContextProvider({ children }) {
         outputAmount,
         tokenInBalance,
         tokenOutBalance,
+        rate,
+        gasFees,
       }}
     >
       {children}

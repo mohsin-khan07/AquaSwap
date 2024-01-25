@@ -19,6 +19,15 @@ export const getPoolConstants = async (tokenIn, tokenOut, provider) => {
     provider
   );
 
+  const slot0 = await poolContract.slot0();
+  const sqrt = slot0.sqrtPriceX96.toString();
+
+  const multiply = (sqrt / 2 ** 96) ** 2;
+  const rate = (
+    multiply /
+    (10 ** tokenOut.decimals / 10 ** tokenIn.decimals)
+  ).toFixed(6);
+
   const [token0, token1, fee] = await Promise.all([
     poolContract.token0(),
     poolContract.token1(),
@@ -29,5 +38,6 @@ export const getPoolConstants = async (tokenIn, tokenOut, provider) => {
     token0,
     token1,
     fee,
+    rate,
   };
 };
