@@ -1,15 +1,27 @@
-import { useSwapContext } from "../contexts/SwapContext";
 import styles from "../styles/SwapDetails.module.css";
-import SwapButton from "./swap/SwapButton";
-import DetailsList from "./swap/DetailsList";
 
 function SwapDetails() {
-  const { getQuote } = useSwapContext();
-
   return (
-    <div className={styles.card}>
+    <div className={styles.container}>
       <DetailsList />
-      <SwapButton onClick={getQuote} />
+    </div>
+  );
+}
+
+function DetailsList() {
+  return (
+    <div className={styles.list}>
+      <Details />
+      <Details />
+    </div>
+  );
+}
+
+function Details() {
+  return (
+    <div className={styles.details}>
+      <div>Rate</div>
+      <div className={styles.value}>1 ETH = 2237.2286 USDT</div>
     </div>
   );
 }

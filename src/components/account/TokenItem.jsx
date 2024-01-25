@@ -3,7 +3,6 @@ import styles from "../../styles/account/TokenItem.module.css";
 import TokenDetails from "./TokenDetails";
 
 function TokenItem({ icon, symbol, tokenName, balance }) {
-  // console.log(icon);
   const decimalBalance = parseFloat(balance);
   let formattedBalance = decimalBalance.toFixed(2);
 

@@ -24,14 +24,16 @@ function AccountContextProvider({ children }) {
   const { userAddress } = useGlobalContext();
 
   useEffect(() => {
-    const getEthBalance = async () => {
-      const balance = await alchemy.core.getBalance(userAddress);
-      const formattedBalance = parseFloat(
-        Utils.formatUnits(balance, 18)
-      ).toFixed(4);
-      setEthBalance(formattedBalance);
-    };
-    getEthBalance();
+    if (userAddress) {
+      const getEthBalance = async () => {
+        const balance = await alchemy.core.getBalance(userAddress);
+        const formattedBalance = parseFloat(
+          Utils.formatUnits(balance, 18)
+        ).toFixed(4);
+        setEthBalance(formattedBalance);
+      };
+      getEthBalance();
+    }
   }, [userAddress]);
 
   useEffect(() => {

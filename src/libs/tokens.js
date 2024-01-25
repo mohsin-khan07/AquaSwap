@@ -17,6 +17,4 @@ const tokens = [
   ),
 ];
 
-// const tokensSymbols = tokens.map((token) => token.symbol);
-
 export { tokens };

@@ -10,7 +10,7 @@ function SelectButton({ selectedToken, setToken }) {
 
   return (
     <div className={styles.button}>
-      <img className={styles.icon} src="ethIcon.svg" alt="icon"></img>
+      {/* <img className={styles.icon} src="ethIcon.svg" alt="icon"></img> */}
       <select
         value={selectedToken}
         onChange={(e) => tokenFromSymbol(e.target.value)}

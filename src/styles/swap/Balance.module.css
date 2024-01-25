@@ -1,12 +1,9 @@
-.details {
+.container {
   display: flex;
   justify-content: space-between;
   align-items: center;
   align-self: stretch;
-}
-
-.value {
-  font-size: 14px;
-  color: var(--color-dark-1);
-  text-align: right;
+  margin: 0px 30px;
+  font-size: 12px;
+  font-weight: 300;
 }

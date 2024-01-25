@@ -19,17 +19,11 @@ export const getPoolConstants = async (tokenIn, tokenOut, provider) => {
     provider
   );
 
-  console.log(poolContract);
-
   const [token0, token1, fee] = await Promise.all([
     poolContract.token0(),
     poolContract.token1(),
     poolContract.fee(),
   ]);
-
-  console.log(token0);
-  console.log(token1);
-  console.log(fee);
 
   return {
     token0,
