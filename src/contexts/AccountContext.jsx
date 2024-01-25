@@ -6,8 +6,8 @@ import { Alchemy, Network, Utils } from "alchemy-sdk";
 const AccountContext = createContext();
 
 const settings = {
-  apiKey: import.meta.env.VITE_SEPOLIA_API,
-  network: Network.ETH_SEPOLIA,
+  apiKey: import.meta.env.VITE_MAINNET_API,
+  network: Network.ETH_MAINNET,
 };
 
 const alchemy = new Alchemy(settings);

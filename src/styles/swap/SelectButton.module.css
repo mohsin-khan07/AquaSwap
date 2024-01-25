@@ -1,4 +1,5 @@
-.select {
+.button {
+  height: 50px;
   display: flex;
   padding: 0px 15px 0px 10px;
   justify-content: center;
@@ -17,12 +18,18 @@
   box-shadow: var(--light-shadow);
 }
 
-.symbol {
+select {
+  font: inherit;
   font-size: 18px;
   font-weight: 600;
   line-height: 20px;
+  background: none;
+  border: none;
+  color: inherit;
+  outline: none;
+  padding-right: 10px;
 }
 
-.arrow {
+/* .arrow {
   width: 10px;
-}
+} */

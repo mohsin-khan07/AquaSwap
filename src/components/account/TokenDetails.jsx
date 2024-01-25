@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import styles from "./TokenDetails.module.css";
+import styles from "../../styles/account/TokenDetails.module.css";
 
 function TokenDetails({ icon, symbol, tokenName }) {
   return (

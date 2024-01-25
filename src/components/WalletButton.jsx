@@ -1,7 +1,7 @@
-import { useGlobalContext } from "../../contexts/GlobalContext";
-import styles from "./AddressButton.module.css";
+import { useGlobalContext } from "../contexts/GlobalContext";
+import styles from "../styles/WalletButton.module.css";
 
-function AddressButton() {
+function WalletButton() {
   const { userAddress, getWalletAddress } = useGlobalContext();
 
   return (
@@ -13,4 +13,4 @@ function AddressButton() {
   );
 }
 
-export default AddressButton;
+export default WalletButton;

@@ -1,4 +1,4 @@
-import styles from "./SwapCard.module.css";
+import styles from "../styles/SwapCard.module.css";
 import Arrow from "./swap/Arrow";
 import From from "./swap/From";
 import To from "./swap/To";

@@ -1,5 +1,5 @@
 import { useAccountContext } from "../../contexts/AccountContext";
-import styles from "./ZeroBalanceButton.module.css";
+import styles from "../../styles/account/ZeroBalanceButton.module.css";
 
 function ZeroBalanceButton() {
   const { hideZeroBal, setHideZeroBal } = useAccountContext();

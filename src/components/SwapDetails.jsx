@@ -1,12 +1,15 @@
-import styles from "./SwapDetails.module.css";
-import Button from "./swap/Button";
+import { useSwapContext } from "../contexts/SwapContext";
+import styles from "../styles/SwapDetails.module.css";
+import SwapButton from "./swap/SwapButton";
 import DetailsList from "./swap/DetailsList";
 
 function SwapDetails() {
+  const { getQuote } = useSwapContext();
+
   return (
     <div className={styles.card}>
       <DetailsList />
-      <Button />
+      <SwapButton onClick={getQuote} />
     </div>
   );
 }

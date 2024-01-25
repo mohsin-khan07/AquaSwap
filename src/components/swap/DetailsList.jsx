@@ -1,4 +1,4 @@
-import styles from "./DetailsList.module.css";
+import styles from "../../styles/swap/DetailsList.module.css";
 import Details from "./Details";
 
 function DetailsList() {

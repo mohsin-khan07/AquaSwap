@@ -1,4 +1,4 @@
-import styles from "./TokensList.module.css";
+import styles from "../../styles/account/TokensList.module.css";
 import TokenItem from "./TokenItem";
 import { useAccountContext } from "../../contexts/AccountContext";
 import { Utils } from "alchemy-sdk";

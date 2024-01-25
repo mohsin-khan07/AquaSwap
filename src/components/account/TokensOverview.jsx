@@ -1,5 +1,5 @@
 import { useAccountContext } from "../../contexts/AccountContext";
-import styles from "./TokensOverview.module.css";
+import styles from "../../styles/account/TokensOverview.module.css";
 import ZeroBalanceButton from "./ZeroBalanceButton";
 
 function TokensOverview() {

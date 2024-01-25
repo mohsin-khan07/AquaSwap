@@ -5,18 +5,23 @@ import Logo from "./components/Logo";
 import Footer from "./components/Footer";
 import { GlobalContextProvider } from "./contexts/GlobalContext";
 import { AccountContextProvider } from "./contexts/AccountContext";
+import { SwapContextProvider } from "./contexts/SwapContext";
+import WalletOverview from "./components/WalletOverview";
 
 function App() {
   return (
     <section>
       <GlobalContextProvider>
-        <Logo />
-        <SwapCard />
-        <SwapDetails />
         <AccountContextProvider>
+          <Logo />
+          <WalletOverview />
+          <SwapContextProvider>
+            <SwapCard />
+            <SwapDetails />
+          </SwapContextProvider>
           <AccountDetails />
+          <Footer />
         </AccountContextProvider>
-        <Footer />
       </GlobalContextProvider>
     </section>
   );

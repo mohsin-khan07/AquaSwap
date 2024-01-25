@@ -1,11 +1,25 @@
-import styles from "./SelectButton.module.css";
+/* eslint-disable react/prop-types */
+import { tokens } from "../../libs/tokens";
+import styles from "../../styles/swap/SelectButton.module.css";
 
-function SelectButton() {
+function SelectButton({ selectedToken, setToken }) {
+  function tokenFromSymbol(symbol) {
+    const token = tokens.find((token) => token.symbol === symbol);
+    setToken(token);
+  }
+
   return (
-    <div className={styles.select}>
+    <div className={styles.button}>
       <img className={styles.icon} src="ethIcon.svg" alt="icon"></img>
-      <div className={styles.symbol}>ETH</div>
-      <img className={styles.arrow} src="openCloseArrow.svg" alt="arrow"></img>
+      <select
+        value={selectedToken}
+        onChange={(e) => tokenFromSymbol(e.target.value)}
+      >
+        <option value="">Select token</option>
+        {tokens.map((token) => (
+          <option key={token.symbol}>{token.symbol}</option>
+        ))}
+      </select>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import styles from "./Details.module.css";
+import styles from "../../styles/swap/Details.module.css";
 
 function Details() {
   return (

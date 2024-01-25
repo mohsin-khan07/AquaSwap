@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useContext } from "react";
 import { createContext } from "react";
 
@@ -10,19 +10,21 @@ function GlobalContextProvider({ children }) {
   const [walletError, setWalletError] = useState(false);
   const [walletConnected, setWalletConnected] = useState(false);
 
-  useEffect(() => {
-    const getAddress = async () => {
-      if (window.ethereum) {
-        const eth = window.ethereum;
-        const address = await eth.request({ method: "eth_requestAccounts" });
-        setUserAddress(address[0]);
-        setWalletConnected(true);
-      } else {
-        alert("No wallet is available to connect");
-      }
-    };
-    getAddress();
-  }, []);
+  // console.log(userAddress);
+
+  // useEffect(() => {
+  //   const getAddress = async () => {
+  //     if (window.ethereum) {
+  //       const eth = window.ethereum;
+  //       const address = await eth.request({ method: "eth_requestAccounts" });
+  //       setUserAddress(address[0]);
+  //       setWalletConnected(true);
+  //     } else {
+  //       alert("No wallet is available to connect");
+  //     }
+  //   };
+  //   getAddress();
+  // }, []);
 
   const getWalletAddress = async () => {
     if (window.ethereum) {

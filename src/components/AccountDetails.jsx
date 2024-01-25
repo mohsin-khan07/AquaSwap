@@ -1,12 +1,12 @@
-import styles from "./AccountDetails.module.css";
+import styles from "../styles/AccountDetails.module.css";
 import TokensOverview from "./account/TokensOverview";
-import WalletOverview from "./account/WalletOverview";
 import TokensList from "./account/TokensList";
+import AccountOverview from "./account/AccountOverview";
 
 function AccountDetails() {
   return (
     <div className={styles.card}>
-      <WalletOverview />
+      <AccountOverview />
       <TokensOverview />
       <TokensList />
     </div>

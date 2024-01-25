@@ -1,7 +1,8 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import { useAccountContext } from "../../contexts/AccountContext";
 import { useGlobalContext } from "../../contexts/GlobalContext";
-import styles from "./EthOverview.module.css";
+import styles from "../../styles/account/EthOverview.module.css";
 
 function EthOverview() {
   const [usdBalance, setUsdBalance] = useState();
@@ -19,7 +20,7 @@ function EthOverview() {
 
   return (
     <div className={styles.container}>
-      <div>{ethBalance} ETH</div>
+      <div>{ethBalance === 0 ? "0" : ethBalance} ETH</div>
       <div className={styles.usd}>
         {!isNaN(usdBalance) ? `$${usdBalance}` : "$0"}
       </div>

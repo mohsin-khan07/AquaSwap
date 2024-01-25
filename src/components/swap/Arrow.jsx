@@ -1,4 +1,4 @@
-import styles from "./Arrow.module.css";
+import styles from "../../styles/swap/Arrow.module.css";
 // import DownArrow from "../../../../public/downArrow.svg";
 
 function Arrow() {
