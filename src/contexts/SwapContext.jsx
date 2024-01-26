@@ -3,10 +3,10 @@ import Quoter from "@uniswap/v3-periphery/artifacts/contracts/lens/Quoter.sol/Qu
 import { ethers } from "ethers";
 import { createContext, useContext, useEffect, useState } from "react";
 import { fromReadableAmount, toReadableAmount } from "../libs/conversion";
-import { getPoolConstants } from "../libs/poolConstants";
 import { Alchemy, Network, Utils } from "alchemy-sdk";
 import { useGlobalContext } from "./GlobalContext";
 import { getGasFees } from "../libs/gasFees";
+import { FeeAmount } from "@uniswap/v3-sdk";
 
 const SwapContext = createContext();
 
@@ -37,38 +37,26 @@ function SwapContextProvider({ children }) {
   const [tokenOutBalance, setTokenOutBalance] = useState();
   const [amountIn, setAmountIn] = useState(0);
   const [outputAmount, setOutputAmount] = useState("");
-  const [rate, setRate] = useState();
+  // const [rate, setRate] = useState();
   const [gasFees, setGasFees] = useState();
 
   const { userAddress, getUsdBalance } = useGlobalContext();
 
   useEffect(() => {
     const getQuote = async () => {
-      if (tokenIn && tokenOut) {
-        const poolConstants = await getPoolConstants(
-          tokenIn,
-          tokenOut,
-          provider
-        );
-
-        setRate(poolConstants.rate);
-
-        if (amountIn !== 0) {
-          try {
-            const quotedAmountOut =
-              await quoterContract.callStatic.quoteExactInputSingle(
-                poolConstants.token0,
-                poolConstants.token1,
-                poolConstants.fee,
-                fromReadableAmount(amountIn, tokenIn.decimals).toString(),
-                0
-              );
-            setOutputAmount(
-              toReadableAmount(quotedAmountOut, tokenOut.decimals)
+      if (tokenIn && tokenOut && amountIn !== 0) {
+        try {
+          const quotedAmountOut =
+            await quoterContract.callStatic.quoteExactInputSingle(
+              tokenIn.address,
+              tokenOut.address,
+              FeeAmount.MEDIUM,
+              fromReadableAmount(amountIn, tokenIn.decimals).toString(),
+              0
             );
-          } catch {
-            throw new Error("Error calculating output amount!");
-          }
+          setOutputAmount(toReadableAmount(quotedAmountOut, tokenOut.decimals));
+        } catch {
+          throw new Error("Error calculating output amount!");
         }
       }
     };
@@ -139,7 +127,7 @@ function SwapContextProvider({ children }) {
         outputAmount,
         tokenInBalance,
         tokenOutBalance,
-        rate,
+        // rate,
         gasFees,
       }}
     >

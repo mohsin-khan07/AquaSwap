@@ -6,8 +6,8 @@ const POOL_FACTORY_CONTRACT_ADDRESS =
   "0x1F98431c8aD98523631AE4a59f267346ea31F984";
 
 export const getPoolConstants = async (tokenIn, tokenOut, provider) => {
-  console.log(tokenIn);
-  console.log(tokenOut);
+  console.log(tokenIn.address);
+  console.log(tokenOut.address);
 
   const currPoolAddress = computePoolAddress({
     factoryAddress: POOL_FACTORY_CONTRACT_ADDRESS,
@@ -15,6 +15,10 @@ export const getPoolConstants = async (tokenIn, tokenOut, provider) => {
     tokenB: tokenOut,
     fee: FeeAmount.MEDIUM,
   });
+
+  // const currPoolAddress = "0x88e6A0c2dDD26FEEb64F039a2c41296FcB3f5640";
+
+  console.log(currPoolAddress);
 
   const poolContract = new ethers.Contract(
     currPoolAddress,
