@@ -42,6 +42,7 @@ function SwapContextProvider({ children }) {
   const [outputAmount, setOutputAmount] = useState("");
   const [rate, setRate] = useState();
   const [gasFees, setGasFees] = useState();
+  const [isLoading, setIsLoading] = useState(false);
 
   const { userAddress, getUsdBalance } = useGlobalContext();
 
@@ -49,6 +50,7 @@ function SwapContextProvider({ children }) {
     const getQuote = async () => {
       if (tokenIn && tokenOut && amountIn !== 0) {
         try {
+          setIsLoading(true);
           const quotedAmountOut =
             await quoterContract.callStatic.quoteExactInputSingle(
               tokenIn.address,
@@ -58,6 +60,7 @@ function SwapContextProvider({ children }) {
               0
             );
           setOutputAmount(toReadableAmount(quotedAmountOut, tokenOut.decimals));
+          setIsLoading(false);
         } catch {
           throw new Error("Error calculating output amount!");
         }
@@ -148,6 +151,7 @@ function SwapContextProvider({ children }) {
         rate,
         gasFees,
         onReverse,
+        isLoading,
       }}
     >
       {children}
