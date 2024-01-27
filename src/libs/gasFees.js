@@ -1,21 +1,18 @@
 import { Utils } from "alchemy-sdk";
 import { fromReadableAmount } from "./conversion";
-import { getPoolConstants } from "./poolConstants";
 
 export const getGasFees = async (
   quoterContract,
   tokenIn,
   tokenOut,
   amountIn,
-  provider,
+  fee,
   alchemy
 ) => {
-  const poolConstants = await getPoolConstants(tokenIn, tokenOut, provider);
-
   const gasEstimate = await quoterContract.estimateGas.quoteExactInputSingle(
-    poolConstants.token0,
-    poolConstants.token1,
-    poolConstants.fee,
+    tokenIn.address,
+    tokenOut.address,
+    fee,
     fromReadableAmount(amountIn, tokenIn.decimals).toString(),
     0
   );

@@ -7,6 +7,7 @@ import { Alchemy, Network, Utils } from "alchemy-sdk";
 import { useGlobalContext } from "./GlobalContext";
 import { getGasFees } from "../libs/gasFees";
 import { FeeAmount } from "@uniswap/v3-sdk";
+import { calcRate } from "../libs/calcRate";
 
 const SwapContext = createContext();
 
@@ -30,6 +31,8 @@ const quoterContract = new ethers.Contract(
   provider
 );
 
+const fee = FeeAmount.MEDIUM;
+
 function SwapContextProvider({ children }) {
   const [tokenIn, setTokenIn] = useState();
   const [tokenInBalance, setTokenInBalance] = useState();
@@ -37,7 +40,7 @@ function SwapContextProvider({ children }) {
   const [tokenOutBalance, setTokenOutBalance] = useState();
   const [amountIn, setAmountIn] = useState(0);
   const [outputAmount, setOutputAmount] = useState("");
-  // const [rate, setRate] = useState();
+  const [rate, setRate] = useState();
   const [gasFees, setGasFees] = useState();
 
   const { userAddress, getUsdBalance } = useGlobalContext();
@@ -50,7 +53,7 @@ function SwapContextProvider({ children }) {
             await quoterContract.callStatic.quoteExactInputSingle(
               tokenIn.address,
               tokenOut.address,
-              FeeAmount.MEDIUM,
+              fee,
               fromReadableAmount(amountIn, tokenIn.decimals).toString(),
               0
             );
@@ -98,6 +101,16 @@ function SwapContextProvider({ children }) {
   }, [userAddress, tokenIn, tokenOut]);
 
   useEffect(() => {
+    const getRate = async () => {
+      if (tokenIn && tokenOut) {
+        const res = await calcRate(provider, tokenIn, tokenOut, fee);
+        setRate(res);
+      }
+    };
+    getRate();
+  }, [tokenIn, tokenOut]);
+
+  useEffect(() => {
     const gasFees = async () => {
       if (tokenIn && tokenOut && amountIn !== 0) {
         const gasFee = await getGasFees(
@@ -105,7 +118,7 @@ function SwapContextProvider({ children }) {
           tokenIn,
           tokenOut,
           amountIn,
-          provider,
+          fee,
           alchemy
         );
         const gasInUsd = await getUsdBalance(gasFee);
@@ -127,7 +140,7 @@ function SwapContextProvider({ children }) {
         outputAmount,
         tokenInBalance,
         tokenOutBalance,
-        // rate,
+        rate,
         gasFees,
       }}
     >
