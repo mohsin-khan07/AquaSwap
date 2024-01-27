@@ -32,7 +32,7 @@ function DetailsList() {
       {outputAmount ? (
         <Details
           title={"Fee (0.3%)"}
-          value={`${outputAmount * 0.003} ${tokenOut.symbol}`}
+          value={`${(outputAmount * 0.003).toFixed(4)} ${tokenOut.symbol}`}
         />
       ) : (
         ""

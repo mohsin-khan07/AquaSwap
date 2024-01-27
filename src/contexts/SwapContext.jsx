@@ -1,13 +1,13 @@
 /* eslint-disable react/prop-types */
 import Quoter from "@uniswap/v3-periphery/artifacts/contracts/lens/Quoter.sol/Quoter.json";
-import { ethers } from "ethers";
 import { createContext, useContext, useEffect, useState } from "react";
-import { fromReadableAmount, toReadableAmount } from "../libs/conversion";
+import { ethers } from "ethers";
+import { FeeAmount } from "@uniswap/v3-sdk";
 import { Alchemy, Network, Utils } from "alchemy-sdk";
 import { useGlobalContext } from "./GlobalContext";
 import { getGasFees } from "../libs/gasFees";
-import { FeeAmount } from "@uniswap/v3-sdk";
 import { calcRate } from "../libs/calcRate";
+import { fromReadableAmount, toReadableAmount } from "../libs/conversion";
 
 const SwapContext = createContext();
 

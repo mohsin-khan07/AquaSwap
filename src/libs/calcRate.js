@@ -1,6 +1,6 @@
+import IUniswapV3PoolABI from "@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Pool.sol/IUniswapV3Pool.json";
 import { ethers } from "ethers";
 import { computePoolAddress } from "@uniswap/v3-sdk";
-import IUniswapV3PoolABI from "@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Pool.sol/IUniswapV3Pool.json";
 import { tokens } from "./tokens";
 
 const factoryAddress = "0x1F98431c8aD98523631AE4a59f267346ea31F984";
@@ -40,7 +40,7 @@ export const calcRate = async (provider, tokenIn, tokenOut, fee) => {
 
     if (token0 === tokenIn.address) return buyOneOfTokenIn;
     else return buyOneOfTokenOut;
-  } catch (error) {
-    console.error(error.message);
+  } catch {
+    throw new Error("Error calculating rate!");
   }
 };
