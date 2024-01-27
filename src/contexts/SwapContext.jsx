@@ -128,6 +128,11 @@ function SwapContextProvider({ children }) {
     gasFees();
   }, [amountIn, tokenIn, tokenOut, getUsdBalance]);
 
+  const onReverse = () => {
+    setTokenIn(tokenOut);
+    setTokenOut(tokenIn);
+  };
+
   return (
     <SwapContext.Provider
       value={{
@@ -142,6 +147,7 @@ function SwapContextProvider({ children }) {
         tokenOutBalance,
         rate,
         gasFees,
+        onReverse,
       }}
     >
       {children}

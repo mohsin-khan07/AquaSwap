@@ -8,6 +8,12 @@
   gap: 20px;
 }
 
+.hLine {
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-brand-sec);
+}
+
 .list {
   width: 100%;
   display: flex;

@@ -14,30 +14,33 @@ function DetailsList() {
   const { tokenIn, tokenOut, outputAmount, rate, gasFees } = useSwapContext();
 
   return (
-    <div className={styles.list}>
-      {tokenIn && tokenOut && rate ? (
-        <Details
-          title={"Rate"}
-          value={`1 ${tokenIn.symbol} = ${rate} ${tokenOut.symbol}`}
-        />
-      ) : (
-        ""
-      )}
-      {gasFees ? (
-        <Details title={"Estimated Gas Fees"} value={`$${gasFees}`} />
-      ) : (
-        ""
-      )}
+    <>
+      <div className={styles.hLine}></div>
+      <div className={styles.list}>
+        {tokenIn && tokenOut && rate ? (
+          <Details
+            title={"Rate"}
+            value={`1 ${tokenIn.symbol} = ${rate} ${tokenOut.symbol}`}
+          />
+        ) : (
+          ""
+        )}
+        {gasFees ? (
+          <Details title={"Estimated Gas Fees"} value={`$${gasFees}`} />
+        ) : (
+          ""
+        )}
 
-      {outputAmount ? (
-        <Details
-          title={"Fee (0.3%)"}
-          value={`${(outputAmount * 0.003).toFixed(4)} ${tokenOut.symbol}`}
-        />
-      ) : (
-        ""
-      )}
-    </div>
+        {outputAmount ? (
+          <Details
+            title={"Fee (0.3%)"}
+            value={`${(outputAmount * 0.003).toFixed(4)} ${tokenOut.symbol}`}
+          />
+        ) : (
+          ""
+        )}
+      </div>
+    </>
   );
 }
 
