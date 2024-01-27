@@ -9,17 +9,23 @@ export const getGasFees = async (
   fee,
   alchemy
 ) => {
-  const gasEstimate = await quoterContract.estimateGas.quoteExactInputSingle(
-    tokenIn.address,
-    tokenOut.address,
-    fee,
-    fromReadableAmount(amountIn, tokenIn.decimals).toString(),
-    0
-  );
+  try {
+    const gasEstimate = await quoterContract.estimateGas.quoteExactInputSingle(
+      tokenIn.address,
+      tokenOut.address,
+      fee,
+      fromReadableAmount(amountIn, tokenIn.decimals).toString(),
+      0
+    );
 
-  const gasPrice = (await alchemy.core.getGasPrice()).toString();
+    const gasPrice = (await alchemy.core.getGasPrice()).toString();
+    const gasFee = Utils.formatUnits(
+      gasPrice * gasEstimate.toString(),
+      "ether"
+    );
 
-  const gasFee = Utils.formatUnits(gasPrice * gasEstimate.toString(), "ether");
-
-  return gasFee;
+    return gasFee;
+  } catch {
+    throw new Error("Error calculating gas fees!");
+  }
 };

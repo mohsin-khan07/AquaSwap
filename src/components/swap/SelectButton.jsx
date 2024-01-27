@@ -2,10 +2,13 @@
 import { tokens } from "../../libs/tokens";
 import styles from "../../styles/swap/SelectButton.module.css";
 
-function SelectButton({ selectedToken, setToken }) {
+function SelectButton({ selectedToken, otherToken, setToken, setOtherToken }) {
   function tokenFromSymbol(symbol) {
     const token = tokens.find((token) => token.symbol === symbol);
-    setToken(token);
+    if (token === otherToken) {
+      setOtherToken(tokens.find((token) => token.symbol === selectedToken));
+      setToken(token);
+    } else setToken(token);
   }
 
   return (
@@ -15,7 +18,6 @@ function SelectButton({ selectedToken, setToken }) {
         value={selectedToken}
         onChange={(e) => tokenFromSymbol(e.target.value)}
       >
-        <option value="">Select token</option>
         {tokens.map((token) => (
           <option key={token.symbol}>{token.symbol}</option>
         ))}

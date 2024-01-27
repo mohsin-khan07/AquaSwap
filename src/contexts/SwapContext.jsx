@@ -8,6 +8,7 @@ import { useGlobalContext } from "./GlobalContext";
 import { getGasFees } from "../libs/gasFees";
 import { calcRate } from "../libs/calcRate";
 import { fromReadableAmount, toReadableAmount } from "../libs/conversion";
+import { tokens } from "../libs/tokens";
 
 const SwapContext = createContext();
 
@@ -34,9 +35,9 @@ const quoterContract = new ethers.Contract(
 const fee = FeeAmount.MEDIUM;
 
 function SwapContextProvider({ children }) {
-  const [tokenIn, setTokenIn] = useState();
+  const [tokenIn, setTokenIn] = useState(tokens[0]);
   const [tokenInBalance, setTokenInBalance] = useState();
-  const [tokenOut, setTokenOut] = useState();
+  const [tokenOut, setTokenOut] = useState(tokens[1]);
   const [tokenOutBalance, setTokenOutBalance] = useState();
   const [amountIn, setAmountIn] = useState(0);
   const [outputAmount, setOutputAmount] = useState("");
@@ -48,7 +49,7 @@ function SwapContextProvider({ children }) {
 
   useEffect(() => {
     const getQuote = async () => {
-      if (tokenIn && tokenOut && amountIn !== 0) {
+      if (amountIn !== 0) {
         try {
           setIsLoading(true);
           const quotedAmountOut =
@@ -72,31 +73,28 @@ function SwapContextProvider({ children }) {
   useEffect(() => {
     if (userAddress) {
       try {
-        if (tokenIn) {
-          const calTokenInBalance = async () => {
-            const res = await alchemy.core.getTokenBalances(userAddress, [
-              tokenIn.address,
-            ]);
-            const [b1] = res.tokenBalances;
-            setTokenInBalance(
-              Utils.formatUnits(b1.tokenBalance, tokenIn.decimals)
-            );
-          };
-          calTokenInBalance();
-        }
-        if (tokenOut) {
-          const calTokenOutBalance = async () => {
-            const res = await alchemy.core.getTokenBalances(userAddress, [
-              tokenOut.address,
-            ]);
+        const calTokenInBalance = async () => {
+          const res = await alchemy.core.getTokenBalances(userAddress, [
+            tokenIn.address,
+          ]);
+          const [b1] = res.tokenBalances;
+          setTokenInBalance(
+            Utils.formatUnits(b1.tokenBalance, tokenIn.decimals)
+          );
+        };
+        calTokenInBalance();
 
-            const [b2] = res.tokenBalances;
-            setTokenOutBalance(
-              Utils.formatUnits(b2.tokenBalance, tokenOut.decimals)
-            );
-          };
-          calTokenOutBalance();
-        }
+        const calTokenOutBalance = async () => {
+          const res = await alchemy.core.getTokenBalances(userAddress, [
+            tokenOut.address,
+          ]);
+
+          const [b2] = res.tokenBalances;
+          setTokenOutBalance(
+            Utils.formatUnits(b2.tokenBalance, tokenOut.decimals)
+          );
+        };
+        calTokenOutBalance();
       } catch (error) {
         throw new Error("Error fetching tokens balances");
       }
@@ -105,17 +103,15 @@ function SwapContextProvider({ children }) {
 
   useEffect(() => {
     const getRate = async () => {
-      if (tokenIn && tokenOut) {
-        const res = await calcRate(provider, tokenIn, tokenOut, fee);
-        setRate(res);
-      }
+      const res = await calcRate(provider, tokenIn, tokenOut, fee);
+      setRate(res);
     };
     getRate();
   }, [tokenIn, tokenOut]);
 
   useEffect(() => {
     const gasFees = async () => {
-      if (tokenIn && tokenOut && amountIn !== 0) {
+      if (amountIn !== 0) {
         const gasFee = await getGasFees(
           quoterContract,
           tokenIn,
