@@ -1,4 +1,4 @@
-export const getUsdBalance = async (ethBalance) => {
+export const calcUsdBalance = async (ethBalance) => {
   parseFloat(ethBalance);
   const res = await fetch("https://api.coincap.io/v2/assets/ethereum");
   const resJson = await res.json();

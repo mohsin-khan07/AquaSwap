@@ -2,6 +2,7 @@ import { Utils } from "alchemy-sdk";
 import { fromReadableAmount } from "./conversion";
 import { quoterContract } from "./quote";
 import { alchemy, fee } from "./FeeAndProviders";
+import { calcUsdBalance } from "./ethToUsd";
 
 export const calcGasFees = async (
   tokenInAddress,
@@ -26,7 +27,8 @@ export const calcGasFees = async (
         "ether"
       );
 
-      return gasFee;
+      const gasFeeInUsd = await calcUsdBalance(gasFee);
+      return gasFeeInUsd;
     } catch {
       throw new Error("Error calculating gas fees!");
     }
