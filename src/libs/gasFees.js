@@ -1,31 +1,34 @@
 import { Utils } from "alchemy-sdk";
 import { fromReadableAmount } from "./conversion";
+import { quoterContract } from "./quote";
+import { alchemy, fee } from "./FeeAndProviders";
 
-export const getGasFees = async (
-  quoterContract,
-  tokenIn,
-  tokenOut,
-  amountIn,
-  fee,
-  alchemy
+export const calcGasFees = async (
+  tokenInAddress,
+  tokenOutAddress,
+  tokenInDecimals,
+  amount
 ) => {
-  try {
-    const gasEstimate = await quoterContract.estimateGas.quoteExactInputSingle(
-      tokenIn.address,
-      tokenOut.address,
-      fee,
-      fromReadableAmount(amountIn, tokenIn.decimals).toString(),
-      0
-    );
+  if (amount !== 0) {
+    try {
+      const gasEstimate =
+        await quoterContract.estimateGas.quoteExactInputSingle(
+          tokenInAddress,
+          tokenOutAddress,
+          fee,
+          fromReadableAmount(amount, tokenInDecimals).toString(),
+          0
+        );
 
-    const gasPrice = (await alchemy.core.getGasPrice()).toString();
-    const gasFee = Utils.formatUnits(
-      gasPrice * gasEstimate.toString(),
-      "ether"
-    );
+      const gasPrice = (await alchemy.core.getGasPrice()).toString();
+      const gasFee = Utils.formatUnits(
+        gasPrice * gasEstimate.toString(),
+        "ether"
+      );
 
-    return gasFee;
-  } catch {
-    throw new Error("Error calculating gas fees!");
+      return gasFee;
+    } catch {
+      throw new Error("Error calculating gas fees!");
+    }
   }
 };

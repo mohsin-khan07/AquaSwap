@@ -1,40 +1,18 @@
 /* eslint-disable react/prop-types */
-import { createContext, useContext, useEffect, useState } from "react";
-import { Alchemy, Network, Utils } from "alchemy-sdk";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useGlobalContext } from "./GlobalContext";
+import { alchemy } from "../libs/FeeAndProviders";
 
 const AccountContext = createContext();
 
-const settings = {
-  apiKey: import.meta.env.VITE_MAINNET_API,
-  network: Network.ETH_MAINNET,
-};
-
-const alchemy = new Alchemy(settings);
-
 function AccountContextProvider({ children }) {
-  const [ethBalance, setEthBalance] = useState();
   const [tokenBalancesObject, setTokenBalancesObject] = useState([]);
   const [tokenDataObjects, setTokenDataObjects] = useState([]);
   const [hideZeroBal, setHideZeroBal] = useState(false);
-
   const [isLoading, setIsLoading] = useState(false);
   const [hasQueried, setHasQueried] = useState(false);
 
   const { userAddress } = useGlobalContext();
-
-  useEffect(() => {
-    if (userAddress) {
-      const getEthBalance = async () => {
-        const balance = await alchemy.core.getBalance(userAddress);
-        const formattedBalance = parseFloat(
-          Utils.formatUnits(balance, 18)
-        ).toFixed(4);
-        setEthBalance(formattedBalance);
-      };
-      getEthBalance();
-    }
-  }, [userAddress]);
 
   useEffect(() => {
     const getTokenData = async () => {
@@ -69,20 +47,26 @@ function AccountContextProvider({ children }) {
     getTokenData();
   }, [userAddress]);
 
+  const value = useMemo(() => {
+    const value = {
+      isLoading,
+      tokenBalancesObject,
+      tokenDataObjects,
+      hasQueried,
+      hideZeroBal,
+      setHideZeroBal,
+    };
+    return value;
+  }, [
+    isLoading,
+    tokenBalancesObject,
+    tokenDataObjects,
+    hasQueried,
+    hideZeroBal,
+  ]);
+
   return (
-    <AccountContext.Provider
-      value={{
-        ethBalance,
-        isLoading,
-        tokenBalancesObject,
-        tokenDataObjects,
-        hasQueried,
-        hideZeroBal,
-        setHideZeroBal,
-      }}
-    >
-      {children}
-    </AccountContext.Provider>
+    <AccountContext.Provider value={value}>{children}</AccountContext.Provider>
   );
 }
 

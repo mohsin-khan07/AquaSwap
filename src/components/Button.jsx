@@ -1,13 +1,15 @@
 /* eslint-disable react/prop-types */
+import { useAmountsContext } from "../contexts/AmountsContext";
 import { useGlobalContext } from "../contexts/GlobalContext";
-import { useSwapContext } from "../contexts/SwapContext";
+import { useTokensContext } from "../contexts/TokensContext";
 import styles from "../styles/Button.module.css";
 
 function Button() {
   const { userAddress, getWalletAddress } = useGlobalContext();
-  const { tokenIn, tokenOut, amountIn } = useSwapContext();
+  const { tokenIn, tokenOut } = useTokensContext();
+  const { amountIn, amountOut } = useAmountsContext();
 
-  const isButtonDisabled = !tokenIn || !tokenOut || !amountIn;
+  const isButtonDisabled = !tokenIn || !tokenOut || !amountIn || !amountOut;
 
   if (userAddress) {
     return (
@@ -31,5 +33,3 @@ function Button() {
 }
 
 export default Button;
-
-// {!tokenIn && !tokenOut && !amountIn}

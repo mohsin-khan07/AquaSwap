@@ -1,11 +1,12 @@
 import IUniswapV3PoolABI from "@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Pool.sol/IUniswapV3Pool.json";
-import { ethers } from "ethers";
 import { computePoolAddress } from "@uniswap/v3-sdk";
+import { ethers } from "ethers";
 import { tokens } from "./tokens";
+import { fee, provider } from "./FeeAndProviders";
 
 const factoryAddress = "0x1F98431c8aD98523631AE4a59f267346ea31F984";
 
-export const calcRate = async (provider, tokenIn, tokenOut, fee) => {
+export const calcRate = async (tokenIn, tokenOut) => {
   try {
     const poolAddress = computePoolAddress({
       factoryAddress: factoryAddress,

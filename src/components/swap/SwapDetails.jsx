@@ -1,45 +1,74 @@
 /* eslint-disable react/prop-types */
-import { useSwapContext } from "../../contexts/SwapContext";
 import styles from "../../styles/swap/SwapDetails.module.css";
+import { useTokensContext } from "../../contexts/TokensContext";
+import { useAmountsContext } from "../../contexts/AmountsContext";
+import { useEffect, useState } from "react";
+import { calcRate } from "../../libs/calcRate";
+import { calcGasFees } from "../../libs/gasFees";
 
 function SwapDetails() {
+  const { isLoading } = useAmountsContext();
+
   return (
     <div className={styles.container}>
-      <DetailsList />
+      {!isLoading ? <DetailsList /> : "Fetching best price..."}
     </div>
   );
 }
 
 function DetailsList() {
-  const { tokenIn, tokenOut, outputAmount, rate, gasFees } = useSwapContext();
+  const { tokenIn, tokenOut } = useTokensContext();
+  const { amountIn, amountOut } = useAmountsContext();
+
+  const [rate, setRate] = useState();
+  const [gasFee, setGasFee] = useState();
+
+  useEffect(() => {
+    const getRate = async () => {
+      const rate = await calcRate(tokenIn, tokenOut);
+      setRate(rate);
+    };
+    getRate();
+  }, [tokenIn, tokenOut]);
+
+  useEffect(() => {
+    const getGasFees = async () => {
+      if (amountIn !== 0) {
+        const gasFee = await calcGasFees(
+          tokenIn.address,
+          tokenOut.address,
+          tokenIn.decimals,
+          amountIn
+        );
+        setGasFee(gasFee);
+      }
+    };
+    getGasFees();
+  }, [tokenIn.address, tokenOut.address, tokenIn.decimals, amountIn]);
 
   return (
     <div className={styles.list}>
       <Details
         title={"Rate"}
         value={
-          tokenIn && tokenOut && rate
-            ? `1 ${tokenIn.symbol} = ${rate} ${tokenOut.symbol}`
-            : "..."
+          rate ? `1 ${tokenIn.symbol} = ${rate} ${tokenOut.symbol}` : "..."
         }
       />
       <Details
         title={"Estimated Gas Fees"}
-        value={gasFees ? `$${gasFees}` : "..."}
+        value={gasFee ? `$${gasFee}` : "..."}
       />
       <Details
         title={"Fee (0.3%)"}
         value={
-          outputAmount && tokenOut
-            ? `${(outputAmount * 0.003).toFixed(4)} ${tokenOut.symbol}`
+          amountOut
+            ? `${(amountOut * 0.003).toFixed(4)} ${tokenOut.symbol}`
             : "..."
         }
       />
     </div>
   );
 }
-
-//tokenIn && tokenOut && outputAmount && rate && gasFees
 
 function Details({ title, value }) {
   return (

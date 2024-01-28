@@ -1,7 +1,10 @@
 /* eslint-disable react/prop-types */
+import { useTokensContext } from "../../contexts/TokensContext";
 import styles from "../../styles/swap/ReverseArrow.module.css";
 
-function ReverseArrow({ onReverse }) {
+function ReverseArrow() {
+  const { onReverse } = useTokensContext();
+
   return (
     <div className={styles.container}>
       <div className={styles.circle} onClick={onReverse}>

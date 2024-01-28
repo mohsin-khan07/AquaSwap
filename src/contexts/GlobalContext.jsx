@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useContext } from "react";
 import { createContext } from "react";
 
@@ -26,27 +26,18 @@ function GlobalContextProvider({ children }) {
     }
   };
 
-  const getUsdBalance = async (ethBalance) => {
-    parseFloat(ethBalance);
-    const res = await fetch("https://api.coincap.io/v2/assets/ethereum");
-    const resJson = await res.json();
-    const ethPrice = parseFloat(resJson.data.priceUsd).toFixed(4);
-    const usdBalance = ethBalance * ethPrice;
-    return usdBalance.toFixed(4);
-  };
+  const value = useMemo(() => {
+    const value = {
+      userAddress,
+      getWalletAddress,
+      walletError,
+      walletConnected,
+    };
+    return value;
+  }, [userAddress, walletConnected, walletError]);
 
   return (
-    <GlobalContext.Provider
-      value={{
-        userAddress,
-        getWalletAddress,
-        walletError,
-        walletConnected,
-        getUsdBalance,
-      }}
-    >
-      {children}
-    </GlobalContext.Provider>
+    <GlobalContext.Provider value={value}>{children}</GlobalContext.Provider>
   );
 }
 

@@ -1,0 +1,16 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.balance {
+  font-weight: 300;
+}
+
+.error {
+  font-weight: 500;
+}

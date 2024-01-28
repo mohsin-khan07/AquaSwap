@@ -1,8 +1,8 @@
 import styles from "../../styles/account/TokensList.module.css";
-import TokenItem from "./TokenItem";
-import { useAccountContext } from "../../contexts/AccountContext";
 import { Utils } from "alchemy-sdk";
+import { useAccountContext } from "../../contexts/AccountContext";
 import { useGlobalContext } from "../../contexts/GlobalContext";
+import TokenItem from "./TokenItem";
 import Spinner from "./Spinner";
 
 function TokensList() {
@@ -76,24 +76,3 @@ function TokensList() {
 }
 
 export default TokensList;
-
-{
-  /* {tokenBalancesObject.tokenBalances.map((token, i) => {
-        if (isActive) {
-          if (token.tokenBalance.toString() !== "0") {
-            return (
-              <TokenItem
-                key={token.contractAddress}
-                icon={tokenDataObjects[i].logo}
-                tokenName={tokenDataObjects[i].name}
-                symbol={tokenDataObjects[i].symbol}
-                balance={Utils.formatUnits(
-                  token.tokenBalance,
-                  tokenDataObjects[i].decimals
-                )}
-              />
-            );
-          }
-        }
-      })} */
-}
