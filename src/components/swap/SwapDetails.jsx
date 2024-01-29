@@ -2,21 +2,11 @@
 import styles from "../../styles/swap/SwapDetails.module.css";
 import { useTokensContext } from "../../contexts/TokensContext";
 import { useAmountsContext } from "../../contexts/AmountsContext";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { calcRate } from "../../libs/calcRate";
 import { calcGasFees } from "../../libs/gasFees";
 
-function SwapDetails() {
-  const { isLoading } = useAmountsContext();
-
-  return (
-    <div className={styles.container}>
-      {!isLoading ? <DetailsList /> : "Fetching best price..."}
-    </div>
-  );
-}
-
-function DetailsList() {
+const SwapDetails = memo(function SwapDetails() {
   const { tokenIn, tokenOut } = useTokensContext();
   const { amountIn, amountOut } = useAmountsContext();
 
@@ -33,7 +23,7 @@ function DetailsList() {
 
   useEffect(() => {
     const getGasFees = async () => {
-      if (amountIn !== 0) {
+      if (amountIn !== 0 && amountOut !== 0) {
         const gasFee = await calcGasFees(
           tokenIn.address,
           tokenOut.address,
@@ -44,7 +34,7 @@ function DetailsList() {
       }
     };
     getGasFees();
-  }, [tokenIn.address, tokenOut.address, tokenIn.decimals, amountIn]);
+  }, [tokenIn.address, tokenOut.address, tokenIn.decimals, amountIn, amountOut]);
 
   return (
     <div className={styles.list}>
@@ -68,7 +58,7 @@ function DetailsList() {
       />
     </div>
   );
-}
+});
 
 function Details({ title, value }) {
   return (

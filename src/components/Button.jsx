@@ -9,7 +9,8 @@ function Button() {
   const { tokenIn, tokenOut } = useTokensContext();
   const { amountIn, amountOut } = useAmountsContext();
 
-  const isButtonDisabled = !tokenIn || !tokenOut || !amountIn || !amountOut;
+  const isButtonDisabled =
+    !tokenIn.address || !tokenOut.address || !amountIn || !amountOut;
 
   if (userAddress) {
     return (

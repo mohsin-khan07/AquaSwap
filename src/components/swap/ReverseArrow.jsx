@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
+import { memo } from "react";
 import { useTokensContext } from "../../contexts/TokensContext";
 import styles from "../../styles/swap/ReverseArrow.module.css";
 
-function ReverseArrow() {
+const ReverseArrow = memo(function ReverseArrow() {
   const { onReverse } = useTokensContext();
 
   return (
@@ -13,6 +14,6 @@ function ReverseArrow() {
       <div className={styles.hLine}></div>
     </div>
   );
-}
+});
 
 export default ReverseArrow;

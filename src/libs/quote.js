@@ -11,13 +11,24 @@ export const quoterContract = new ethers.Contract(
   provider
 );
 
-export const getQuote = async (tokenIn, tokenOut, amount) => {
-  const quotedAmountOut = await quoterContract.callStatic.quoteExactInputSingle(
-    tokenIn.address,
-    tokenOut.address,
-    fee,
-    fromReadableAmount(amount, tokenIn.decimals).toString(),
-    0
-  );
-  return toReadableAmount(quotedAmountOut, tokenOut.decimals);
+export const getQuote = async (
+  tokenInAdd,
+  tokenInDec,
+  tokenOutAdd,
+  tokenOutDec,
+  amount
+) => {
+  try {
+    const quotedAmountOut =
+      await quoterContract.callStatic.quoteExactInputSingle(
+        tokenInAdd,
+        tokenOutAdd,
+        fee,
+        fromReadableAmount(amount, tokenInDec).toString(),
+        0
+      );
+    return toReadableAmount(quotedAmountOut, tokenOutDec);
+  } catch (error) {
+    console.error(error.message);
+  }
 };
