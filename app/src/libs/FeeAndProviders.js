@@ -4,7 +4,7 @@ import { ethers } from "ethers";
 
 export const provider = new ethers.providers.AlchemyProvider(
   "mainnet",
-  import.meta.env.VITE_MAINNET_API
+  import.meta.env.VITE_ALC_MAINNET_API
 );
 
 const settings = {
