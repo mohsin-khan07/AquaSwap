@@ -7,6 +7,8 @@ export const provider = new ethers.providers.AlchemyProvider(
   import.meta.env.VITE_MAINNET_API
 );
 
+// export const provider = new ethers.providers.Web3Provider(window.ethereum)
+
 const settings = {
   apiKey: import.meta.env.VITE_MAINNET_API,
   network: Network.ETH_MAINNET,
