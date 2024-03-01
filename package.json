@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@uniswap/v3-periphery": "^1.4.4",
+    "dotenv": "^16.4.1",
     "hardhat": "^2.19.5"
   },
   "devDependencies": {
